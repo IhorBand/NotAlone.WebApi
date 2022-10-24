@@ -55,12 +55,13 @@ namespace NotAlone.WebApi.Hubs
             await this.Clients.All.SendAsync("ReceiveVideoQuality", model).ConfigureAwait(false);
         }
 
-        public async Task SendNewVideoTimeStampAsync(string videoId, string timestamp)
+        public async Task SendNewVideoTimeStampAsync(string videoId, string timestamp, bool isForce)
         {
             var model = new VideoTimeStampModel()
             {
                 VideoId = new Guid(videoId),
-                TimeStamp = timestamp
+                TimeStamp = timestamp,
+                IsForce = isForce
             };
 
             await this.Clients.All.SendAsync("ReceiveNewVideoTimeStamp", model).ConfigureAwait(false);
@@ -71,7 +72,8 @@ namespace NotAlone.WebApi.Hubs
             var model = new VideoTimeStampModel()
             {
                 VideoId = new Guid(videoId),
-                TimeStamp = timestamp
+                TimeStamp = timestamp,
+                IsForce = true
             };
 
             await this.Clients.All.SendAsync("ReceiveStartVideo", model).ConfigureAwait(false);
@@ -79,7 +81,14 @@ namespace NotAlone.WebApi.Hubs
 
         public async Task SendStopVideoAsync(string videoId, string timestamp)
         {
-            await this.Clients.All.SendAsync("ReceiveStopVideo").ConfigureAwait(false);
+            var model = new VideoTimeStampModel()
+            {
+                VideoId = new Guid(videoId),
+                TimeStamp = timestamp,
+                IsForce = true
+            };
+
+            await this.Clients.All.SendAsync("ReceiveStopVideo", model).ConfigureAwait(false);
         }
     }
 }
