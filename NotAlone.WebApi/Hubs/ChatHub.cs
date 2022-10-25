@@ -41,5 +41,10 @@ namespace NotAlone.WebApi.Hubs
 
             await this.Clients.All.SendAsync("ReceiveMessage", messageModel).ConfigureAwait(false);
         }
+
+        public async Task SendChangeAvatarAsync(int avatarId)
+        {
+            await this.Clients.All.SendAsync("ReceiveChangeAvatarAsync", new { AvatarId = avatarId, UserId = this.UserId, UserName = this.UserName }).ConfigureAwait(false);
+        }
     }
 }

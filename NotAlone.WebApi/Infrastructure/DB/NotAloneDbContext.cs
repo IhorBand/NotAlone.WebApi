@@ -13,5 +13,7 @@ namespace NotAlone.WebApi.Infrastructure.DB
         //Create the DataSet for the Employee         
         public DbSet<User> Users { get; set; }
         public DbSet<RefreshToken> RefreshTokens { get; set; }
+        public DbSet<VideoPlaylist> VideoPlaylists { get; set; }
+        public DbSet<VideoQuality> VideoQualities { get; set; }
     }
 }

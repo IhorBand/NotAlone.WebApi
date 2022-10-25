@@ -221,6 +221,8 @@ namespace NotAlone.WebApi
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IRefreshTokenService, RefreshTokenService>();
+            services.AddScoped<IVideoPlaylistService, VideoPlaylistService>();
+            services.AddScoped<IVideoQualityService, VideoQualityService>();
         }
 
         private Task WriteResponseAsync(HttpContext httpContext, HealthReport result)
