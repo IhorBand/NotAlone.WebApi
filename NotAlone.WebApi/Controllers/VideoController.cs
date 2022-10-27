@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NotAlone.WebApi.Controllers.Base;
 using NotAlone.WebApi.ModelsWebApi.Authorize;
@@ -9,6 +10,7 @@ namespace NotAlone.WebApi.Controllers
 {
     [Route("api/")]
     [ApiController]
+    [Authorize]
     public class VideoController : UserControllerBase
     {
 
@@ -51,9 +53,30 @@ namespace NotAlone.WebApi.Controllers
         }
 
         [HttpGet("Video/{videoId}/Qualities")]
-        public async Task<IActionResult> GetQualities([FromQuery(Name = "videoId")] Guid videoId)
+        public async Task<IActionResult> GetQualities([FromRoute(Name = "videoId")] Guid videoId)
         {
             var qualities = await this.videoQualityService.GetQualityVideosByVideoIdAsync(videoId).ConfigureAwait(false);
+
+            var model = new List<VideoQualityModel>();
+
+            foreach (var quality in qualities)
+            {
+                model.Add(new VideoQualityModel()
+                {
+                    Id = quality.Id,
+                    Name = quality.Name,
+                    Url = quality.Url,
+                    VideoId = quality.VideoId
+                });
+            }
+
+            return this.Ok(model);
+        }
+
+        [HttpGet("Video/Qualities")]
+        public async Task<IActionResult> GetAllQualities()
+        {
+            var qualities = await this.videoQualityService.GetAllQualitiesAsync().ConfigureAwait(false);
 
             var model = new List<VideoQualityModel>();
 

@@ -28,6 +28,12 @@ namespace NotAlone.WebApi.Services.Implementation
             this.jwtTokenConfiguration = jwtTokenConfiguration ?? throw new ArgumentNullException(nameof(jwtTokenConfiguration));
         }
 
+        public async Task<List<VideoQuality>> GetAllQualitiesAsync()
+        {
+            var videoQualities = await this.dbContext.VideoQualities.ToListAsync();
+            return videoQualities;
+        }
+
         public async Task<List<VideoQuality>> GetQualityVideosByVideoIdAsync(Guid videoId)
         {
             var videoQualities = await this.dbContext.VideoQualities.Where(vq => vq.VideoId == videoId).ToListAsync();
