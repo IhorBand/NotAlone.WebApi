@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 using NotAlone.WebApi.Hubs.Base;
+using NotAlone.WebApi.ModelsWebApi.Chat;
 using NotAlone.WebApi.ModelsWebApi.Video;
 using NotAlone.WebApi.Services.Abstractions;
 using SignalRSwaggerGen.Attributes;
@@ -26,15 +27,35 @@ namespace NotAlone.WebApi.Hubs
         }
 
         [SignalRHidden]
-        public override Task OnConnectedAsync()
+        public async override Task OnConnectedAsync()
         {
-            return base.OnConnectedAsync();
+            var user = new UserModel()
+            {
+                Id = this.UserId,
+                UserName = this.UserName,
+                DisplayName = this.DisplayName,
+                AvatarUrl = ""
+            };
+
+            await this.Clients.AllExcept(this.Context.ConnectionId).SendAsync("NewWatcherConnected", user).ConfigureAwait(false);
+
+            await base.OnConnectedAsync();
         }
 
         [SignalRHidden]
-        public override Task OnDisconnectedAsync(Exception? exception)
+        public async override Task OnDisconnectedAsync(Exception? exception)
         {
-            return base.OnDisconnectedAsync(exception);
+            var user = new UserModel()
+            {
+                Id = this.UserId,
+                UserName = this.UserName,
+                DisplayName = this.DisplayName,
+                AvatarUrl = ""
+            };
+
+            await this.Clients.AllExcept(this.Context.ConnectionId).SendAsync("WatcherDisconnected", user).ConfigureAwait(false);
+
+            await base.OnDisconnectedAsync(exception);
         }
 
         public async Task SendVideoAsync(string name)

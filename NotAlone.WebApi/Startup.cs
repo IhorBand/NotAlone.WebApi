@@ -182,7 +182,7 @@ namespace NotAlone.WebApi
             app.UseRouting();
 
             app.UseCors(builder => builder
-                .WithOrigins("http://localhost:5070","http://localhost:3000", "http://151.236.221.211:5000", "http://151.236.221.211:5005", "http://151.236.221.211:80", "http://151.236.221.211")
+                .WithOrigins("http://localhost:5070","http://localhost:3000", "http://151.236.221.211:5000", "http://151.236.221.211:5005", "http://151.236.221.211:80", "http://151.236.221.211", "https://kozachok.monster")
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .AllowCredentials()
